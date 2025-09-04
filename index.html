@@ -37,6 +37,11 @@
             margin: 0 auto;
             display: block;
         }
+        #message {
+            margin-top: 20px;
+            color: green;
+        }
+        /* Estilos adicionais para melhor visualização */
     </style>
 </head>
 <body>
@@ -54,8 +59,8 @@
 
     <section id="editor">
         <h2>Editor de Vídeo</h2>
-        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" data-setup="{}">
-            <source src="seu-video.mp4" type="video/mp4" />
+        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264">
+            <source id="video-source" src="seu-video.mp4" type="video/mp4" />
             Seu navegador não suporta vídeos HTML5.
         </video>
         <div>
@@ -65,6 +70,7 @@
         </div>
         <div>
             <input type="text" id="text-overlay" placeholder="Texto para adicionar">
+            <!-- Aqui poderiam ser adicionadas opções de posicionamento e duração -->
             <button id="add-text">Adicionar Texto</button>
         </div>
         <div>
@@ -78,6 +84,7 @@
     <section id="templates">
         <h2>Galeria de Templates</h2>
         <p>Aqui você pode visualizar e aplicar templates para uso. (Funcionalidade a ser implementada)</p>
+        <!-- Exemplo de templates (a ser implementado) -->
     </section>
 
     <section id="community">
@@ -103,10 +110,11 @@
     <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/Kagami/ffmpeg.js/ffmpeg-all.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Página carregada com sucesso!');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const ffmpeg = FFmpeg.createFFmpeg({ log: true });
+            await ffmpeg.load();
 
-            // Lógica para cortar vídeo
+            // Cortar vídeo
             document.getElementById('edit-video').addEventListener('click', async () => {
                 const start = document.getElementById('start').value;
                 const end = document.getElementById('end').value;
@@ -117,10 +125,6 @@
                     messageDiv.textContent = "Por favor, insira os tempos de início e fim!";
                     return;
                 }
-
-                // Inicializa FFmpeg
-                const ffmpeg = FFmpeg.createFFmpeg({ log: true });
-                await ffmpeg.load();
 
                 // Copia o vídeo para a memória do FFmpeg
                 ffmpeg.FS('writeFile', 'input.mp4', await fetch('seu-video.mp4').then(res => res.arrayBuffer()));
@@ -135,25 +139,25 @@
 
                 // Atualiza o player de vídeo com o novo vídeo
                 const videoElement = document.getElementById('my-video');
-                videoElement.src = url;
+                const videoSource = document.getElementById('video-source');
+                videoSource.src = url;
                 videoElement.load();
                 videoElement.play();
 
                 messageDiv.textContent = "Vídeo editado com sucesso!";
             });
 
-            // Lógica para adicionar texto ao vídeo
+            // Adicionar texto
             document.getElementById('add-text').addEventListener('click', () => {
                 const text = document.getElementById('text-overlay').value;
                 if (text) {
-                    // Aqui você pode implementar a lógica para adicionar texto 
                     alert(`Texto "${text}" adicionado! (Funcionalidade a ser implementada)`);
                 } else {
                     alert("Por favor, insira um texto!");
                 }
             });
 
-            // Lógica para adicionar música
+            // Adicionar música
             document.getElementById('add-music').addEventListener('click', async () => {
                 const musicFile = document.getElementById('music-upload').files[0];
                 if (musicFile) {
@@ -163,7 +167,7 @@
                 }
             });
 
-            // Lógica para enviar feedback
+            // Feedback
             document.getElementById('feedback-form').addEventListener('submit', function(event) {
                 event.preventDefault();
                 const feedback = document.getElementById('feedback').value;
