@@ -77,8 +77,7 @@
 
     <section id="templates">
         <h2>Galeria de Templates</h2>
-        <p>Aqui você pode adicionar templates para uso.</p>
-        <!-- Estrutura para mostrar templates -->
+        <p>Aqui você pode visualizar e aplicar templates para uso. (Funcionalidade a ser implementada)</p>
     </section>
 
     <section id="community">
@@ -104,24 +103,79 @@
     <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/Kagami/ffmpeg.js/ffmpeg-all.min.js"></script>
     <script>
-        // Prepare seu código JavaScript aqui
-        // Assim que você adicionar as funções, você pode criar eventos para os botões.
-        
-        document.getElementById('edit-video').addEventListener('click', function() {
-            // Código para cortar vídeo
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Página carregada com sucesso!');
 
-        document.getElementById('add-text').addEventListener('click', function() {
-            // Código para adicionar texto ao vídeo
-        });
+            // Lógica para cortar vídeo
+            document.getElementById('edit-video').addEventListener('click', async () => {
+                const start = document.getElementById('start').value;
+                const end = document.getElementById('end').value;
+                const messageDiv = document.getElementById('message');
 
-        document.getElementById('add-music').addEventListener('click', function() {
-            // Código para adicionar música ao vídeo
-        });
+                // Validações
+                if (!start || !end) {
+                    messageDiv.textContent = "Por favor, insira os tempos de início e fim!";
+                    return;
+                }
 
-        document.getElementById('feedback-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Código para lidar com feedback
+                // Inicializa FFmpeg
+                const ffmpeg = FFmpeg.createFFmpeg({ log: true });
+                await ffmpeg.load();
+
+                // Copia o vídeo para a memória do FFmpeg
+                ffmpeg.FS('writeFile', 'input.mp4', await fetch('seu-video.mp4').then(res => res.arrayBuffer()));
+
+                // Realiza o corte
+                await ffmpeg.run('-i', 'input.mp4', '-ss', start, '-to', end, '-c', 'copy', 'output.mp4');
+
+                // Recupera o vídeo processado
+                const output = ffmpeg.FS('readFile', 'output.mp4');
+                const videoBlob = new Blob([output.buffer], { type: 'video/mp4' });
+                const url = URL.createObjectURL(videoBlob);
+
+                // Atualiza o player de vídeo com o novo vídeo
+                const videoElement = document.getElementById('my-video');
+                videoElement.src = url;
+                videoElement.load();
+                videoElement.play();
+
+                messageDiv.textContent = "Vídeo editado com sucesso!";
+            });
+
+            // Lógica para adicionar texto ao vídeo
+            document.getElementById('add-text').addEventListener('click', () => {
+                const text = document.getElementById('text-overlay').value;
+                if (text) {
+                    // Aqui você pode implementar a lógica para adicionar texto 
+                    alert(`Texto "${text}" adicionado! (Funcionalidade a ser implementada)`);
+                } else {
+                    alert("Por favor, insira um texto!");
+                }
+            });
+
+            // Lógica para adicionar música
+            document.getElementById('add-music').addEventListener('click', async () => {
+                const musicFile = document.getElementById('music-upload').files[0];
+                if (musicFile) {
+                    alert(`Música "${musicFile.name}" adicionada! (Funcionalidade a ser implementada)`);
+                } else {
+                    alert("Por favor, selecione uma música!");
+                }
+            });
+
+            // Lógica para enviar feedback
+            document.getElementById('feedback-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const feedback = document.getElementById('feedback').value;
+                const feedbackList = document.getElementById('feedback-list');
+
+                if (feedback) {
+                    const feedbackItem = document.createElement('p');
+                    feedbackItem.textContent = feedback;
+                    feedbackList.appendChild(feedbackItem);
+                    document.getElementById('feedback').value = ''; // Limpa o campo
+                }
+            });
         });
     </script>
 </body>
