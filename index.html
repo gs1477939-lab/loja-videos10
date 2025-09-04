@@ -58,23 +58,37 @@
             <source src="seu-video.mp4" type="video/mp4" />
             Seu navegador não suporta vídeos HTML5.
         </video>
-        <button onclick="alert('Funcionalidade de edição a ser implementada!')">Editar Vídeo</button>
+        <div>
+            <input type="text" id="start" placeholder="Início (em segundos)">
+            <input type="text" id="end" placeholder="Fim (em segundos)">
+            <button id="edit-video">Cortar Vídeo</button>
+        </div>
+        <div>
+            <input type="text" id="text-overlay" placeholder="Texto para adicionar">
+            <button id="add-text">Adicionar Texto</button>
+        </div>
+        <div>
+            <input type="file" id="music-upload" accept="audio/*">
+            <button id="add-music">Adicionar Música</button>
+        </div>
         <p>Bem-vindo ao nosso editor de vídeo inovador!</p>
+        <div id="message"></div>
     </section>
 
     <section id="templates">
         <h2>Galeria de Templates</h2>
-        <!-- Mantenha aqui a estrutura para mostrar seus templates -->
         <p>Aqui você pode adicionar templates para uso.</p>
+        <!-- Estrutura para mostrar templates -->
     </section>
 
     <section id="community">
         <h2>Feedback da Comunidade</h2>
-        <form>
+        <form id="feedback-form">
             <label for="feedback">Deixe seu feedback:</label><br>
             <textarea id="feedback" rows="4" cols="50" placeholder="Escreva seu feedback aqui..."></textarea><br>
             <button type="submit">Enviar</button>
         </form>
+        <div id="feedback-list"></div>
     </section>
 
     <section id="features">
@@ -88,9 +102,26 @@
     </section>
 
     <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Kagami/ffmpeg.js/ffmpeg-all.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Página carregada com sucesso!');
+        // Prepare seu código JavaScript aqui
+        // Assim que você adicionar as funções, você pode criar eventos para os botões.
+        
+        document.getElementById('edit-video').addEventListener('click', function() {
+            // Código para cortar vídeo
+        });
+
+        document.getElementById('add-text').addEventListener('click', function() {
+            // Código para adicionar texto ao vídeo
+        });
+
+        document.getElementById('add-music').addEventListener('click', function() {
+            // Código para adicionar música ao vídeo
+        });
+
+        document.getElementById('feedback-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Código para lidar com feedback
         });
     </script>
 </body>
