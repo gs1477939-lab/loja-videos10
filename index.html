@@ -11,9 +11,10 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f0f0f0;
         }
         header {
-            background-color: #333;
+            background-color: #007bff; /* Azul */
             color: #fff;
             padding: 10px 0;
             text-align: center;
@@ -30,18 +31,40 @@
             color: #fff;
             text-decoration: none;
         }
-        section {
+        .container {
             padding: 20px;
         }
         .video-js {
+            width: 100%;
+            max-width: 640px;
             margin: 0 auto;
             display: block;
         }
-        #message {
-            margin-top: 20px;
-            color: green;
+        .gear {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
         }
-        /* Estilos adicionais para melhor visualização */
+        .gear::before {
+            content: '⚙️';
+            font-size: 24px;
+        }
+        .form-section, .template-section, .community-section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        footer {
+            text-align: center;
+            background-color: #007bff; /* Azul */
+            color: white;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -52,64 +75,64 @@
                 <li><a href="#editor">Editor</a></li>
                 <li><a href="#templates">Templates</a></li>
                 <li><a href="#community">Comunidade</a></li>
-                <li><a href="#features">Funcionalidades</a></li>
+                <li><span class="gear" onclick="toggleGearMenu()">⚙️</span> Configurações</li>
             </ul>
         </nav>
     </header>
 
-    <section id="editor">
-        <h2>Editor de Vídeo</h2>
-        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264">
-            <source id="video-source" src="seu-video.mp4" type="video/mp4" />
-            Seu navegador não suporta vídeos HTML5.
-        </video>
-        <div>
-            <input type="text" id="start" placeholder="Início (em segundos)">
-            <input type="text" id="end" placeholder="Fim (em segundos)">
-            <button id="edit-video">Cortar Vídeo</button>
-        </div>
-        <div>
-            <input type="text" id="text-overlay" placeholder="Texto para adicionar">
-            <!-- Aqui poderiam ser adicionadas opções de posicionamento e duração -->
-            <button id="add-text">Adicionar Texto</button>
-        </div>
-        <div>
-            <input type="file" id="music-upload" accept="audio/*">
-            <button id="add-music">Adicionar Música</button>
-        </div>
-        <p>Bem-vindo ao nosso editor de vídeo inovador!</p>
-        <div id="message"></div>
-    </section>
+    <div class="container">
+        <section id="editor" class="form-section">
+            <h2>Editor de Vídeo</h2>
+            <video id="my-video" class="video-js" controls preload="auto">
+                <source id="video-source" src="seu-video.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos HTML5.
+            </video>
+            <div>
+                <input type="text" id="start" placeholder="Início (em segundos)">
+                <input type="text" id="end" placeholder="Fim (em segundos)">
+                <button id="edit-video">Cortar Vídeo</button>
+            </div>
+            <div>
+                <input type="text" id="text-overlay" placeholder="Texto para adicionar">
+                <button id="add-text">Adicionar Texto</button>
+            </div>
+            <div>
+                <input type="file" id="music-upload" accept="audio/*">
+                <button id="add-music">Adicionar Música</button>
+            </div>
+            <div id="message"></div>
+        </section>
 
-    <section id="templates">
-        <h2>Galeria de Templates</h2>
-        <p>Aqui você pode visualizar e aplicar templates para uso. (Funcionalidade a ser implementada)</p>
-        <!-- Exemplo de templates (a ser implementado) -->
-    </section>
+        <section id="templates" class="template-section">
+            <h2>Galeria de Templates</h2>
+            <p>Aqui você pode visualizar e aplicar templates para uso. (Funcionalidade a ser implementada)</p>
+        </section>
 
-    <section id="community">
-        <h2>Feedback da Comunidade</h2>
-        <form id="feedback-form">
-            <label for="feedback">Deixe seu feedback:</label><br>
-            <textarea id="feedback" rows="4" cols="50" placeholder="Escreva seu feedback aqui..."></textarea><br>
-            <button type="submit">Enviar</button>
-        </form>
-        <div id="feedback-list"></div>
-    </section>
+        <section id="community" class="community-section">
+            <h2>Feedback da Comunidade</h2>
+            <form id="feedback-form">
+                <label for="feedback">Deixe seu feedback:</label><br>
+                <textarea id="feedback" rows="4" cols="50" placeholder="Escreva seu feedback aqui..."></textarea><br>
+                <button type="submit">Enviar</button>
+            </form>
+            <div id="feedback-list"></div>
+        </section>
+    </div>
 
-    <section id="features">
-        <h2>Funcionalidades</h2>
-        <ul>
-            <li>Editor de vídeo intuitivo.</li>
-            <li>Galeria de templates prontos.</li>
-            <li>Feedback da comunidade.</li>
-            <li>Próximas implementações em desenvolvimento!</li>
-        </ul>
-    </section>
+    <footer>
+        <p>© 2023 PixelEdits</p>
+    </footer>
 
     <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/Kagami/ffmpeg.js/ffmpeg-all.min.js"></script>
     <script>
+        const gearMenuOpen = false;
+
+        function toggleGearMenu() {
+            // Aqui você pode adicionar opções que deseja
+            alert('Configurações não implementadas ainda.'); // Placeholder
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const ffmpeg = FFmpeg.createFFmpeg({ log: true });
             await ffmpeg.load();
@@ -126,25 +149,27 @@
                     return;
                 }
 
-                // Copia o vídeo para a memória do FFmpeg
-                ffmpeg.FS('writeFile', 'input.mp4', await fetch('seu-video.mp4').then(res => res.arrayBuffer()));
+                try {
+                    const videoFile = 'seu-video.mp4'; // Modify to your actual video URL
+                    ffmpeg.FS('writeFile', 'input.mp4', await fetch(videoFile).then(res => res.arrayBuffer()));
 
-                // Realiza o corte
-                await ffmpeg.run('-i', 'input.mp4', '-ss', start, '-to', end, '-c', 'copy', 'output.mp4');
+                    // Realiza o corte
+                    await ffmpeg.run('-i', 'input.mp4', '-ss', start, '-to', end, '-c', 'copy', 'output.mp4');
 
-                // Recupera o vídeo processado
-                const output = ffmpeg.FS('readFile', 'output.mp4');
-                const videoBlob = new Blob([output.buffer], { type: 'video/mp4' });
-                const url = URL.createObjectURL(videoBlob);
+                    const output = ffmpeg.FS('readFile', 'output.mp4');
+                    const videoBlob = new Blob([output.buffer], { type: 'video/mp4' });
+                    const url = URL.createObjectURL(videoBlob);
 
-                // Atualiza o player de vídeo com o novo vídeo
-                const videoElement = document.getElementById('my-video');
-                const videoSource = document.getElementById('video-source');
-                videoSource.src = url;
-                videoElement.load();
-                videoElement.play();
+                    const videoElement = document.getElementById('my-video');
+                    const videoSource = document.getElementById('video-source');
+                    videoSource.src = url;
+                    videoElement.load();
+                    videoElement.play();
 
-                messageDiv.textContent = "Vídeo editado com sucesso!";
+                    messageDiv.textContent = "Vídeo editado com sucesso!";
+                } catch (error) {
+                    messageDiv.textContent = "Erro ao editar o vídeo!";
+                }
             });
 
             // Adicionar texto
